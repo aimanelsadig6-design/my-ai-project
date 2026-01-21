@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image to 3D</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #121212; color: white; }
+        #drop-zone {
+            width: 300px; height: 200px; border: 2px dashed #4A90E2;
+            border-radius: 20px; display: flex; align-items: center;
+            justify-content: center; text-align: center; transition: 0.3s;
+            cursor: pointer; background: #1e1e1e;
+        }
+        #drop-zone.hover { background: #2c2c2c; border-color: #fff; }
+        #preview { max-width: 200px; margin-top: 20px; display: none; border-radius: 10px; }
+        button { margin-top: 20px; padding: 10px 20px; border-radius: 5px; border: none; background: #4A90E2; color: white; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>AI 3D Generator</h1>
+    <p>Drag an image below to start</p>
+
+    <div id="drop-zone">Drag & Drop Image Here</div>
+    <img id="preview" src="" alt="Image preview">
+    
+    <button id="generate-btn">Generate 3D Model</button>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const preview = document.getElementById('preview');
+
+        // Handle Drag & Drop styling
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('hover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('hover'));
+
+        // Handle File Drop
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('hover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    dropZone.innerText = "Image Loaded!";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
